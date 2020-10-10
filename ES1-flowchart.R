@@ -1,6 +1,6 @@
 Print_values <- function(a,b,c) {
-  if(a>b){#�ȱȽ�a��b�Ĵ�С
-    if(b>c){#a>bʱ���ٱȽ�b��c�Ĵ�С
+  if(a>b){#先比较a和b的大小
+    if(b>c){#a>b时，再比较b和c的大小
       labc <- list(a=a,b=b,c=c)
       print(labc)
     }
@@ -17,7 +17,7 @@ Print_values <- function(a,b,c) {
   }
   else {
     if (b>c){
-      #����ͼ��a<bʱ����b>cʱ���ֻ��ӡ��c��a��b��
+      #流程图在a<b时，当b>c时红框只打印（c，a，b）
        labc <- list(c=c,a=a,b=b)
        print(labc)
       'if(c>a){
@@ -28,7 +28,7 @@ Print_values <- function(a,b,c) {
         labc <- list(b=b,a=a,c=c)
         print(labc)
       }
-    }'#������b>c>a �� b>a>c �����
+    }'#考虑了b>c>a 和 b>a>c 的情况
     else {
       labc <- list(c=c,b=b,a=a)
       print(labc)
@@ -36,7 +36,7 @@ Print_values <- function(a,b,c) {
   }
 }
 
-#test ����ʵ������ͼ��Ҫ��
+#test 可以实现流程图的要求
 Print_values(3,2,1)
 Print_values(4,2,3)
 Print_values(4,2,5)
