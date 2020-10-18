@@ -1,11 +1,11 @@
-Least_moves <- function(k)#³¢ÊÔÊ¹ÓÃµÝ¹éÇó½â
-{#ÒòÎªÃ¿´ÎÒÆ¶¯¶¼Ö»»á±¶Ôö»òÕß¼Ó1
-#Òò´ËÔÚ1~100Ö®¼ä£¬µÚn£¨n>2£©¸öÆæÊý£¨2n-1£©µÄ²½ÊýÒ»¶¨ÊÇµÚn-1¸öÅ¼ÊýµÄ²½Êý¼ÓÒ»¡£
-#¼´ÓÐsteps£¨2i+1£©=steps£¨2i£©+1
-#¶øÇÒsteps£¨2i£© = steps(i)+1
-  #¼´ÓÐµ±i´óÓÚ3Ê±£¬Èç¹ûÎªÅ¼Êý£¬Ôò¼ÆËãi/2µÄ²½Êý£¬ÔÙ¼ÓÒ»¼´¿ÉµÃµ½iµÄ²½Êý
-  #Èç¹ûÎªÆæÊý£¬Ôò¼ÆËãi-1µÄ²½Êý£¬ÔÙ¼ÓÒ»¼´¿ÉµÃµ½iµÄ²½Êý
-  #Ò»Ö±µÝ¹éµ½i=1£¬2£¬3Ê±µÄÇéÐÎ¼´¿É
+Least_moves <- function(k)#å°è¯•ä½¿ç”¨é€’å½’æ±‚è§£
+{#å› ä¸ºæ¯æ¬¡ç§»åŠ¨éƒ½åªä¼šå€å¢žæˆ–è€…åŠ 1
+#å› æ­¤åœ¨1~100ä¹‹é—´ï¼Œç¬¬nï¼ˆn>2ï¼‰ä¸ªå¥‡æ•°ï¼ˆ2n-1ï¼‰çš„æ­¥æ•°ä¸€å®šæ˜¯ç¬¬n-1ä¸ªå¶æ•°çš„æ­¥æ•°åŠ ä¸€ã€‚
+#å³æœ‰stepsï¼ˆ2i+1ï¼‰=stepsï¼ˆ2iï¼‰+1
+#è€Œä¸”stepsï¼ˆ2iï¼‰ = steps(i)+1
+  #å³æœ‰å½“iå¤§äºŽ3æ—¶ï¼Œå¦‚æžœä¸ºå¶æ•°ï¼Œåˆ™è®¡ç®—i/2çš„æ­¥æ•°ï¼Œå†åŠ ä¸€å³å¯å¾—åˆ°içš„æ­¥æ•°
+  #å¦‚æžœä¸ºå¥‡æ•°ï¼Œåˆ™è®¡ç®—i-1çš„æ­¥æ•°ï¼Œå†åŠ ä¸€å³å¯å¾—åˆ°içš„æ­¥æ•°
+  #ä¸€ç›´é€’å½’åˆ°i=1ï¼Œ2ï¼Œ3æ—¶çš„æƒ…å½¢å³å¯
   if (k <= 3)
   {
       if (k==1) {
@@ -17,9 +17,9 @@ Least_moves <- function(k)#³¢ÊÔÊ¹ÓÃµÝ¹éÇó½â
     }
     else if (k==3) {
       return(2)
-    }#ÕâÈý¸öifÓï¾ä¶¨ÒåÁË2£¬3µÄ²½Êý
+    }#è¿™ä¸‰ä¸ªifè¯­å¥å®šä¹‰äº†2ï¼Œ3çš„æ­¥æ•°
   }
-  else {#k´óÓÚ3Ê±£¬¿ÉÒÔÊ¹ÓÃµÝ¹é
+  else {#kå¤§äºŽ3æ—¶ï¼Œå¯ä»¥ä½¿ç”¨é€’å½’
     if(k %% 2== 0)
     {
       return(Least_moves(k/2)+1)
@@ -31,6 +31,7 @@ Least_moves <- function(k)#³¢ÊÔÊ¹ÓÃµÝ¹éÇó½â
 }
 
 #test
-for (i in 1:10){#°Ñ1-10Ö®¼äµÄËùÓÐ²½Êý¶¼´òÓ¡³öÀ´
+for (i in 1:10){#æŠŠ1-10ä¹‹é—´çš„æ‰€æœ‰æ­¥æ•°éƒ½æ‰“å°å‡ºæ¥
   print(paste0(i,"->",Least_moves(i)))
 }
+# good work
