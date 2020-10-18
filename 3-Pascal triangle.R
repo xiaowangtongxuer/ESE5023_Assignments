@@ -6,21 +6,22 @@ Pascal_triangle <- function(k){
   if (k==2){
     vec <- c(1,1)
     return(vec)
-  }#µÚÒ»¶þ²ãÖ±½ÓÓÃÔªËØºÍÏòÁ¿À´±íÊ¾
-  if(k>=3){#µ±k´óÓÚ2²ã£¬¿¼ÂÇÉú³Ék x kµÄ¾ØÕó£¬ÓÃÀ´¼ÇÂ¼3~k²ãµÄÊý
-    m1 <- matrix(data=0,nrow = k,ncol = k)#¾ØÕóµÄµÚiÐÐ»áÓÐi¸öÓÐÓÃµÄÊý
+  }#ç¬¬ä¸€äºŒå±‚ç›´æŽ¥ç”¨å…ƒç´ å’Œå‘é‡æ¥è¡¨ç¤º
+  if(k>=3){#å½“kå¤§äºŽ2å±‚ï¼Œè€ƒè™‘ç”Ÿæˆk x kçš„çŸ©é˜µï¼Œç”¨æ¥è®°å½•3~kå±‚çš„æ•°
+    m1 <- matrix(data=0,nrow = k,ncol = k)#çŸ©é˜µçš„ç¬¬iè¡Œä¼šæœ‰iä¸ªæœ‰ç”¨çš„æ•°
     m1[1,1]=1
-    m1[2,1]=m1[2,2]=1#½«µÚ1/2ÐÐµÄÇ°1/2¸öÊý¸³ÖµÎª1
+    # better use "<-" instead of "=" in Rï¼Œ they are different in some condition
+    m1[2,1]=m1[2,2]=1#å°†ç¬¬1/2è¡Œçš„å‰1/2ä¸ªæ•°èµ‹å€¼ä¸º1
     for(i in 3:k){
-      m1[i,1]=m1[i,i]=1#µÚiÐÐµÄµÚ1¸öºÍµÚi¸öÊý×ÜÊÇÎª1
+      m1[i,1]=m1[i,i]=1#ç¬¬iè¡Œçš„ç¬¬1ä¸ªå’Œç¬¬iä¸ªæ•°æ€»æ˜¯ä¸º1
       for(j in 2:(i-1)){
-        m1[i,j]=m1[(i-1),(j-1)]+m1[(i-1),j]#ÓÃË«ÖØforÑ­»·À´ÊµÏÖ¶ÔµÚiÐÐ2~£¨i-1£©¸öÔªËØµÄ¸³Öµ
+        m1[i,j]=m1[(i-1),(j-1)]+m1[(i-1),j]#ç”¨åŒé‡forå¾ªçŽ¯æ¥å®žçŽ°å¯¹ç¬¬iè¡Œ2~ï¼ˆi-1ï¼‰ä¸ªå…ƒç´ çš„èµ‹å€¼
       }
     }
-    #for(ii in 1:k){#´Ë´¦²âÊÔÊÇ·ñÂú×ãÑî»ÔÈý½Ç
+    #for(ii in 1:k){#æ­¤å¤„æµ‹è¯•æ˜¯å¦æ»¡è¶³æ¨è¾‰ä¸‰è§’
       #print(m1[ii,])
     #}
-    return(m1[k,])#º¯Êý·µ»Ø¾ØÕóµÄµÚkÐÐ¼´¿É
+    return(m1[k,])#å‡½æ•°è¿”å›žçŸ©é˜µçš„ç¬¬kè¡Œå³å¯
   }
 }
 
