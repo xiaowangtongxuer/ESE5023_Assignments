@@ -29,12 +29,13 @@ Print_values <- function(a,b,c) {
         print(labc)
       }
     }'#考虑了b>c>a 和 b>a>c 的情况
+      #I don`t understand what do you mean by doing this, if you want to make an annotation of the entire part ,you should take a "#" at the beginning of every row 
     else {
       labc <- list(c=c,b=b,a=a)
       print(labc)
     }
   }
-}
+}# this curly bracket is related to line 18, so there isn`t any additional curly bracket for  your function
 
 #test 可以实现流程图的要求
 Print_values(3,2,1)
