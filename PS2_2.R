@@ -46,7 +46,7 @@ wind_data  %>%
 #  mutate(wind_speed=as.numeric(substr(WND,9,12)))%>%
 #  select(Month,wind_speed) %>% 
 #  group_by(Month) %>% 
-#  summarise(windspeed_month=mean(wind_speed,na.rm = T)) %>% 
+#  summarise(windspeed_month=0.1*mean(wind_speed,na.rm = T)) %>% 
 #  mutate(month = as.Date(paste0(Month,"-","15"))) %>%
 #  ggplot(aes(x=month, y=windspeed_month)) + 
 #  geom_line()
