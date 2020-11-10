@@ -1,101 +1,116 @@
-#Éè¶¨¹¤×÷Ä¿Â¼£¬¼ÓÔØ°²×°°ü
+#è®¾å®šå·¥ä½œç›®å½•ï¼ŒåŠ è½½å®‰è£…åŒ…
 setwd('D:/ESEHW#2')
 getwd()
 library(tidyr)
 library(dplyr)
 library(ggplot2)
-#1.1 Read .txtÎÄ¼ş
+#1.1 Read .txtæ–‡ä»¶
 data1 <- read.table(file = 'signif.txt',sep='\t',header=TRUE,quote='')
-Sig_Eqs <- as_tibble(data1) #½«Æä×ª»¯Îª±í¸ñ
+Sig_Eqs <- as_tibble(data1) #å°†å…¶è½¬åŒ–ä¸ºè¡¨æ ¼
 class(Sig_Eqs)
 colnames(data1)
-#ÏÔÊ¾±íÍ·£¬²¢Àí½â¸÷ÁĞº¬Òå
-#¹ú¼Ò£º COUNTRY  µØÕğµÈ¼¶:  EQ_PRIMARY
-#µØÕğËÀÍö×ÜÊı £ºDEATHS  µØÕğ´ÎÊı FLAG_TSUNAMI  
-#µØÕğÈÕÆÚ YEAR MONTH DAY 
+#æ˜¾ç¤ºè¡¨å¤´ï¼Œå¹¶ç†è§£å„åˆ—å«ä¹‰
+#å›½å®¶ï¼š COUNTRY  åœ°éœ‡ç­‰çº§:  EQ_PRIMARY
+#åœ°éœ‡æ­»äº¡æ€»æ•° ï¼šDEATHS  åœ°éœ‡æ¬¡æ•° FLAG_TSUNAMI  
+#åœ°éœ‡æ—¥æœŸ YEAR MONTH DAY 
 
-#1.2 ¼ÆËãÃ¿¸ö¹ú¼ÒµÄËÀÍö×ÜÊı£¬²¢Êä³öÅÅÃûÇ°Ê®¹ú¼Ò¼°¸÷×ÔËÀÍö×ÜÊı
-Sig_Eqs[is.na(Sig_Eqs)] <- 0 #½«NAÖµ¶¼±äÎª0£¬·½±ãÇóºÍ
+#1.2 è®¡ç®—æ¯ä¸ªå›½å®¶çš„æ­»äº¡æ€»æ•°ï¼Œå¹¶è¾“å‡ºæ’åå‰åå›½å®¶åŠå„è‡ªæ­»äº¡æ€»æ•°
+Sig_Eqs[is.na(Sig_Eqs)] <- 0 #å°†NAå€¼éƒ½å˜ä¸º0ï¼Œæ–¹ä¾¿æ±‚å’Œ 
+# @MingYANG noticed:
+# if you want to get the summation of data except NA, use "na.rm=T" to remove it :
+# filter(TotalDeath=sum(DEATHS,na.rm=T))
+# the end
 every_country_totaldeaths <- Sig_Eqs %>%
   select(COUNTRY, DEATHS) %>%
-  group_by(COUNTRY) %>% #¸ù¾İ¹ú¼Ò·Ö×é
-  summarize(DT = sum(DEATHS)) %>% #·Ö±ğÇóºÍ£¬Çó³ö¸÷¸ö¹ú¼ÒµÄµØÕğËÀÍö×ÜÊı
-  arrange(desc(DT)) #°´ËÀÍö×ÜÊı½µĞòÅÅÁĞ
+  group_by(COUNTRY) %>% #æ ¹æ®å›½å®¶åˆ†ç»„
+  summarize(DT = sum(DEATHS)) %>% #åˆ†åˆ«æ±‚å’Œï¼Œæ±‚å‡ºå„ä¸ªå›½å®¶çš„åœ°éœ‡æ­»äº¡æ€»æ•°
+  arrange(desc(DT)) #æŒ‰æ­»äº¡æ€»æ•°é™åºæ’åˆ—
 every_country_totaldeaths
 every_country_totaldeaths[1:10,]
 
-#1.3 ¼ÆËãÃ¿ÄêÈ«Çò·¶Î§ÄÚµØÕğµÈ¼¶´óÓÚ6.0µÄµØÕğ×ÜÊı£¬²¢»æÍ¼
-YEAR_times <- Sig_Eqs %>% #É¸Ñ¡³öµØÕğµÈ¼¶´óÓÚ6µÄÄê·İ£¬¶ÔÃ¿ÄêµØÕğ´ÎÊı¼ÓºÍ
+#1.3 è®¡ç®—æ¯å¹´å…¨çƒèŒƒå›´å†…åœ°éœ‡ç­‰çº§å¤§äº6.0çš„åœ°éœ‡æ€»æ•°ï¼Œå¹¶ç»˜å›¾
+YEAR_times <- Sig_Eqs %>% #ç­›é€‰å‡ºåœ°éœ‡ç­‰çº§å¤§äº6çš„å¹´ä»½ï¼Œå¯¹æ¯å¹´åœ°éœ‡æ¬¡æ•°åŠ å’Œ
   select(FLAG_TSUNAMI, YEAR, COUNTRY, EQ_PRIMARY) %>%
-  mutate(times = ifelse(EQ_PRIMARY>=6.0,1,0)) %>%#ĞÂ½¨timesÁĞÓÃÀ´¼ÇÊı
+  mutate(times = ifelse(EQ_PRIMARY>=6.0,1,0)) %>%#æ–°å»ºtimesåˆ—ç”¨æ¥è®°æ•°
+# @MingYANG recommended:
+# three ways will do you some help for counting the qualified data:
+# (1) nrow()
+# (2) n()
+# (3) count()
+# the end
   select(YEAR,EQ_PRIMARY,times) %>%
   group_by(YEAR) %>%
   #mutate(total_times = sum(times)) %>%
   summarize(total_times = sum(times)) %>%
   select(YEAR,total_times)
 
-every_year <- data.frame(YEAR=-2150:2020,c=0) #²¹³äÃ»ÓĞµØÕğÄê·İµÄÌìÊıµÄÊı¾İ£¬
+every_year <- data.frame(YEAR=-2150:2020,c=0) #è¡¥å……æ²¡æœ‰åœ°éœ‡å¹´ä»½çš„å¤©æ•°çš„æ•°æ®ï¼Œ
 all_years <- merge(YEAR_times,every_year,by="YEAR",all=TRUE)
 all_years$c <- NULL
-all_years[is.na(all_years)] <- 0 #½«NAÖµ±äÎª0
-#½«Ã»ÓĞ¼ÇÂ¼µÄÄê·İµØÕğ´ÎÊı¼ÇÎªÁã£¬ÔÙ×÷Í¼
+all_years[is.na(all_years)] <- 0 #å°†NAå€¼å˜ä¸º0
+#å°†æ²¡æœ‰è®°å½•çš„å¹´ä»½åœ°éœ‡æ¬¡æ•°è®°ä¸ºé›¶ï¼Œå†ä½œå›¾
 all_years %>%
   ggplot(aes(x=YEAR, y=total_times)) + 
   geom_line() +
   geom_point(size=1)
 
-#»æÖÆ½ü500ÄêÃ¿ÄêµØÕğ×ÜÊı£¬½øÒ»²½¹Û²ìÄêµØÕğ×ÜÊı±ä»¯Ç÷ÊÆ
+#ç»˜åˆ¶è¿‘500å¹´æ¯å¹´åœ°éœ‡æ€»æ•°ï¼Œè¿›ä¸€æ­¥è§‚å¯Ÿå¹´åœ°éœ‡æ€»æ•°å˜åŒ–è¶‹åŠ¿
 plot(all_years$YEAR[3750:4250],all_years$total_times[3750:4250],type = 'o')
 
-#1.4 ±àĞ´º¯Êı
-Sig_Eqs[is.na(Sig_Eqs)] <- 0 #½«NAÖµ¸³ÖµÎª0
-total_times_country <- Sig_Eqs %>% ##µÃµ½Ã¿¸ö¹ú¼ÒµØÕğ×ÜÊı£¬²¢°´ÕÕ×ÜÊı´óĞ¡ÅÅĞò
+#1.4 ç¼–å†™å‡½æ•°
+Sig_Eqs[is.na(Sig_Eqs)] <- 0 #å°†NAå€¼èµ‹å€¼ä¸º0
+total_times_country <- Sig_Eqs %>% ##å¾—åˆ°æ¯ä¸ªå›½å®¶åœ°éœ‡æ€»æ•°ï¼Œå¹¶æŒ‰ç…§æ€»æ•°å¤§å°æ’åº
   select(FLAG_TSUNAMI, YEAR, MONTH, DAY, COUNTRY, DEATHS, EQ_PRIMARY) %>%
   group_by(COUNTRY) %>%
   mutate(times = 1) %>%
   summarize(total_2150BC = sum(times)) %>%
   arrange(desc(total_2150BC))
 total_times_country
-maxEq_country <- Sig_Eqs %>% ##µÃµ½ÁËÃ¿¸ö¹ú¼Ò×î´óµØÕğµÈ¼¶Êı¾İ
+maxEq_country <- Sig_Eqs %>% ##å¾—åˆ°äº†æ¯ä¸ªå›½å®¶æœ€å¤§åœ°éœ‡ç­‰çº§æ•°æ®
   select(FLAG_TSUNAMI, YEAR, MONTH, DAY, COUNTRY, DEATHS, EQ_PRIMARY) %>%
   group_by(COUNTRY) %>%
   summarize(MAX_Eq = max(EQ_PRIMARY)) 
 maxEq_country
-all_data_country <- Sig_Eqs %>% ##µÃµ½ËùÓĞ»áÓÃµ½µÄÊı¾İ £¨¹ú¼Ò£¬ÄêÔÂÈÕ£¬µØÕğµÈ¼¶£©
+all_data_country <- Sig_Eqs %>% ##å¾—åˆ°æ‰€æœ‰ä¼šç”¨åˆ°çš„æ•°æ® ï¼ˆå›½å®¶ï¼Œå¹´æœˆæ—¥ï¼Œåœ°éœ‡ç­‰çº§ï¼‰
   select( YEAR, MONTH, DAY, COUNTRY,EQ_PRIMARY)
 all_data_country
 
-#ÀûÓÃÉÏÊöÉú³ÉµÄÊı¾İ±í¸ñ£¬×Ô¶¨Òåº¯Êı£¬ÒÔÊµÏÖÌâÄ¿ÒªÇó
+#åˆ©ç”¨ä¸Šè¿°ç”Ÿæˆçš„æ•°æ®è¡¨æ ¼ï¼Œè‡ªå®šä¹‰å‡½æ•°ï¼Œä»¥å®ç°é¢˜ç›®è¦æ±‚
 CountEq_LargestEq <- function(country_name){
-  for(i in 1:nrow(total_times_country)){#µÚÒ»¸öforÑ­»·£¬±éÀú¹ú¼Ò
-    if (total_times_country[i,1] == country_name ){#ÕÒµ½¸Ã¹ú¶ÔÓ¦µÄµØÕğ×ÜÊı
+  for(i in 1:nrow(total_times_country)){#ç¬¬ä¸€ä¸ªforå¾ªç¯ï¼Œéå†å›½å®¶
+    if (total_times_country[i,1] == country_name ){#æ‰¾åˆ°è¯¥å›½å¯¹åº”çš„åœ°éœ‡æ€»æ•°
       T_time <- total_times_country[i,2]
-      print(paste0('µØÕğ×ÜÊı£º',T_time))
+      print(paste0('åœ°éœ‡æ€»æ•°ï¼š',T_time))
     }
-    if(maxEq_country[i,1] == country_name ){#ÕÒµ½¸Ã¹ú¼Ò¶ÔÓ¦µÄ×î´óµØÕğ¼¶Êı£ºmaxEq_country[i,2]
-      for(j in 1:nrow(all_data_country)){#µÚ¶ş¸öforÑ­»·£¬±éÀú¹ú¼Ò£¬ÕÒ×î´óµØÕğ¼¶Êı¶ÔÓ¦µÄÈÕÆÚ
-        if(all_data_country[j,4] == country_name && #µÚËÄÎåÁĞ·Ö±ğÊÇ¹ú¼ÒÃû×ÖºÍµØÕğ¼¶Êı
-           all_data_country[j,5] == maxEq_country[i,2]) #¹ú¼ÒºÍµØÕğ¼¶ÊıÏàµÈÊ±¡£Êä³öÈÕÆÚ¼´¿É
+    if(maxEq_country[i,1] == country_name ){#æ‰¾åˆ°è¯¥å›½å®¶å¯¹åº”çš„æœ€å¤§åœ°éœ‡çº§æ•°ï¼šmaxEq_country[i,2]
+      for(j in 1:nrow(all_data_country)){#ç¬¬äºŒä¸ªforå¾ªç¯ï¼Œéå†å›½å®¶ï¼Œæ‰¾æœ€å¤§åœ°éœ‡çº§æ•°å¯¹åº”çš„æ—¥æœŸ
+        if(all_data_country[j,4] == country_name && #ç¬¬å››äº”åˆ—åˆ†åˆ«æ˜¯å›½å®¶åå­—å’Œåœ°éœ‡çº§æ•°
+           all_data_country[j,5] == maxEq_country[i,2]) #å›½å®¶å’Œåœ°éœ‡çº§æ•°ç›¸ç­‰æ—¶ã€‚è¾“å‡ºæ—¥æœŸå³å¯
           {
-          print(paste0('×î´óµØÕğ¼¶Êı£º',maxEq_country[i,2],',' ,'µØÕğÈÕÆÚ£º',
-                       all_data_country[j,1],'Äê',all_data_country[j,2],'ÔÂ',
-                       all_data_country[j,3],'ÈÕ'))
+          print(paste0('æœ€å¤§åœ°éœ‡çº§æ•°ï¼š',maxEq_country[i,2],',' ,'åœ°éœ‡æ—¥æœŸï¼š',
+                       all_data_country[j,1],'å¹´',all_data_country[j,2],'æœˆ',
+                       all_data_country[j,3],'æ—¥'))
         }
       }
     }
   }
 }
 
-CountEq_LargestEq("CHINA") #³É¹¦ÊµÏÖ
+CountEq_LargestEq("CHINA") #æˆåŠŸå®ç°
 
 #test
-for(i in 1:10){ #±éÀúµØÕğ×ÜÊıÇ°10µÄ¹ú¼Ò£¬Êä³ö¸÷×ÔµÄµØÕğ×ÜÊı£¬×î´óµØÕğµÈ¼¶¼°Æä·¢ÉúµÄÈÕÆÚ
-  #ÈôÏë±éÀúËùÓĞ¹ú¼Ò£¬½« for(i in 1:10) ÖĞµÄ10¸ÄÎª¹ú¼Ò×ÜÊı¼´¿É
+for(i in 1:10){ #éå†åœ°éœ‡æ€»æ•°å‰10çš„å›½å®¶ï¼Œè¾“å‡ºå„è‡ªçš„åœ°éœ‡æ€»æ•°ï¼Œæœ€å¤§åœ°éœ‡ç­‰çº§åŠå…¶å‘ç”Ÿçš„æ—¥æœŸ
+  #è‹¥æƒ³éå†æ‰€æœ‰å›½å®¶ï¼Œå°† for(i in 1:10) ä¸­çš„10æ”¹ä¸ºå›½å®¶æ€»æ•°å³å¯
   test_name <- total_times_country[i,1]
   print(paste0(i,'.',test_name,': '))
   CountEq_LargestEq(test_name)
 }
-
+# @MingYANG recommendedï¼š
+# using this way for briefly coding
+# unique_country<-unique(Sig_Eqs$COUNTRY)
+# for(i in unique_country){
+#   a<-as.numeric(CountEq_LargestEq(i)[1])
+# }
 
 
 
