@@ -4,14 +4,14 @@ library(tidyr)
 library(dplyr)
 library(ggplot2)
 #2
-data2 <- read.csv(file = '2281305.csv',header=TRUE)#¶ÁÈëÊý¾Ý
+data2 <- read.csv(file = '2281305.csv',header=TRUE)#è¯»å…¥æ•°æ®
 colnames(data2)
-#½«WND·ÖÁÑ¿ª£¬µÃµ½²»Í¬µÄÊý¾ÝÁÐ
+#å°†WNDåˆ†è£‚å¼€ï¼Œå¾—åˆ°ä¸åŒçš„æ•°æ®åˆ—
 data2 <- separate(data = data2, col = WND, into = c("direction", 
                   "direction_quality","type","speed","speed_quality"), sep = ",") 
-#ÈÕÆÚÊ±¼äÁÐ·Ö¸î¿ª
+#æ—¥æœŸæ—¶é—´åˆ—åˆ†å‰²å¼€
 data2 <- separate(data = data2, col = DATE, into = c("date", "time"), sep = "T") 
-#·ÖÎªÄêÔÂÈÕ£¬±ãÓÚÇó½âÔÂÆ½¾ù·çËÙ
+#åˆ†ä¸ºå¹´æœˆæ—¥ï¼Œä¾¿äºŽæ±‚è§£æœˆå¹³å‡é£Žé€Ÿ
 data2 <- separate(data = data2, col = date, into = c("year", "month","day"), sep = "-") 
 
 colnames(data2)
@@ -32,8 +32,22 @@ wind_data  %>%
   geom_point() +
   geom_line()
 
-
-
-
-
-
+# @MingYANG recommendedï¼š
+# try this method:
+# a_Data       <- read.csv(file = "2281305.csv", header = T)
+# a_Data <- as_tibble(a_Data)
+# a_Data%>% 
+#  select(WND,DATE) %>% 
+#  filter(substr(WND,1,3)!="999") %>% 
+#  filter(substr(WND,9,12)!="9999") %>% 
+#  filter(substr(WND,5,7)=="1,N")%>%
+#  filter(substr(WND,14,14)=="1")%>%
+#  mutate(Month=as.character(paste0(substr(DATE,1,4),"-",substr(DATE,6,7)))) %>%
+#  mutate(wind_speed=as.numeric(substr(WND,9,12)))%>%
+#  select(Month,wind_speed) %>% 
+#  group_by(Month) %>% 
+#  summarise(windspeed_month=mean(wind_speed,na.rm = T)) %>% 
+#  mutate(month = as.Date(paste0(Month,"-","15"))) %>%
+#  ggplot(aes(x=month, y=windspeed_month)) + 
+#  geom_line()
+# the end
