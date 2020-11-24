@@ -1,4 +1,4 @@
-#Éè¶¨¹¤×÷Ä¿Â¼£¬¼ÓÔØ°²×°°ü
+#è®¾å®šå·¥ä½œç›®å½•ï¼ŒåŠ è½½å®‰è£…åŒ…
 setwd('D:/ESEHW#3')
 getwd()
 library(tidyr)
@@ -6,15 +6,17 @@ library(dplyr)
 library(ggplot2)
 #2
 data2 <- read.csv("data2.csv", header=T)
-ggplot(data2, aes(x = BONE, y = OIC, fill = BONE)) + #×öÏäÐÍÍ¼·ÖÎö¾ùÖµºÍ·Ö²¼Çé¿ö
+ggplot(data2, aes(x = BONE, y = OIC, fill = BONE)) + #åšç®±åž‹å›¾åˆ†æžå‡å€¼å’Œåˆ†å¸ƒæƒ…å†µ
   geom_boxplot() +
   theme_classic()
-data2 %>%  #²é¿´²»Í¬¹ÇÍ·µÄOIC¾ùÖµºÍ·½²î
+data2 %>%  #æŸ¥çœ‹ä¸åŒéª¨å¤´çš„OICå‡å€¼å’Œæ–¹å·®
   group_by(BONE) %>%
   summarise(
     count = n(),
     mean_OIC = mean(OIC, na.rm = TRUE),
     sd_OIC = sd(OIC, na.rm = TRUE)
   )
-anova_one_way <- aov(OIC ~ BONE, data = data2) # µ¥ÒòËØ·½²î·ÖÎö
+anova_one_way <- aov(OIC ~ BONE, data = data2) # å•å› ç´ æ–¹å·®åˆ†æž
 summary(anova_one_way)
+
+#good work!
