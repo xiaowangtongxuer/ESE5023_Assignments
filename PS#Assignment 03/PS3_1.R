@@ -1,18 +1,18 @@
-#Éè¶¨¹¤×÷Ä¿Â¼£¬¼ÓÔØ°²×°°ü
+#è®¾å®šå·¥ä½œç›®å½•ï¼ŒåŠ è½½å®‰è£…åŒ…
 setwd('D:/ESEHW#3')
 getwd()
 library(tidyr)
 library(dplyr)
 library(ggplot2)
 #1.1
-data1 <- read.csv("data1.csv", header=T)#¶ÁÈ¡ÎÄ¼ş²¢´¦ÀíÊı¾İ
+data1 <- read.csv("data1.csv", header=T)#è¯»å–æ–‡ä»¶å¹¶å¤„ç†æ•°æ®
 data1 <- data1 %>%
   select(type,prcp)
-ggplot(data1, aes(x = type, y = prcp, fill = type)) + #×÷³öÏäĞÍÍ¼
+ggplot(data1, aes(x = type, y = prcp, fill = type)) + #ä½œå‡ºç®±å‹å›¾
   geom_boxplot() +
   theme_classic()
 
-data1 %>% #Õ¹Ê¾typeµÄÀàĞÍÒÔ¼°½µÓêÁ¿µÄ¾ùÖµºÍ·½²î
+data1 %>% #å±•ç¤ºtypeçš„ç±»å‹ä»¥åŠé™é›¨é‡çš„å‡å€¼å’Œæ–¹å·®
   group_by(type) %>%
   summarise(
     count = n(),
@@ -21,12 +21,12 @@ data1 %>% #Õ¹Ê¾typeµÄÀàĞÍÒÔ¼°½µÓêÁ¿µÄ¾ùÖµºÍ·½²î
   )
 
 #1.2
-data_seeded <- data1 %>% #·Ö±ğ»ñµÃÏàÓ¦µÄÊı¾İ
+data_seeded <- data1 %>% #åˆ†åˆ«è·å¾—ç›¸åº”çš„æ•°æ®
   filter(type == "seeded")
 data_unseeded <- data1 %>%
   filter(type == "unseeded")
 
-data1 %>% #Õ¹Ê¾typeµÄÀàĞÍÒÔ¼°½µÓêÁ¿µÄ¾ùÖµºÍ·½²î
+data1 %>% #å±•ç¤ºtypeçš„ç±»å‹ä»¥åŠé™é›¨é‡çš„å‡å€¼å’Œæ–¹å·®
   group_by(type) %>%
   summarise(
     count = n(),
@@ -35,8 +35,18 @@ data1 %>% #Õ¹Ê¾typeµÄÀàĞÍÒÔ¼°½µÓêÁ¿µÄ¾ùÖµºÍ·½²î
   )
 
 hist(data_seeded$prcp) 
-hist(data_unseeded$prcp)  #¸÷×ÔµÄ½µÓê²»Âú×ãÕıÌ¬·Ö²¼
-anova_one_way <- aov(prcp ~ type, data = data1) #µ¥ÒòËØ·½²î·ÖÎö
+hist(data_unseeded$prcp)  #å„è‡ªçš„é™é›¨ä¸æ»¡è¶³æ­£æ€åˆ†å¸ƒ
+anova_one_way <- aov(prcp ~ type, data = data1) #å•å› ç´ æ–¹å·®åˆ†æ
 summary(anova_one_way)
 
 t.test(data_seeded$prcp,data_unseeded$prcp)
+
+# @MingYANG recommendedï¼š
+# share my code with you blow â†“â†“â†“
+# Unseeded <- c(1202.6, 830.1, 372.4, 345.5, 321.2, 244.3, 163.0, 147.8, 95.0, 87.0, 81.2, 68.5, 47.3, 41.1, 36.6, 29.0, 28.6, 26.3, 26.0, 24.4, 21.4, 17.3, 11.5, 4.9, 4.9, 1.0)
+# Seeded <- c(2745.6, 1697.1, 1656.4, 978.0, 703.4, 489.1, 430.0, 334.1, 302.8, 274.7, 274.7, 255.0, 242.5, 200.7, 198.6, 129.6, 119.0, 118.3, 115.3, 92.4, 40.6, 32.7, 31.4, 17.5, 7.7, 4.1)
+# rainfall <- cbind(Unseeded,Seeded)      # you may find "cbind" and "rbind" useful!
+# data <- data.frame(rainfall)
+# boxplot(rainfall,width=c(1,2),col=c(2,7),border=c("purple","black"))
+# t.test(Unseeded,Seeded)             # returns the same value of p-value with anova analysis
+# the end
