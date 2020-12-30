@@ -4,8 +4,8 @@ library(sp)
 library(rgdal)
 library(raster)
 library(viridis)
-#1.1 ¼ÓÔØÊı¾İ,²¢ÇÒ·Ö±ğÇóÈ¡ÔÂÆ½¾ùÌ«Ñô·øÉä£¬ÔÂÆ½¾ù·çËÙÒÔ¼°Äê×Ü½µË®
-# ¶¨ÒåÒ»¸ö²ÎÊıÎªÂ·¾¶£¬¿ÉÒÔ¶ÁÈ¡¸ÃÂ·¾¶ÏÂËùÓĞtifÎÄ¼şµÄº¯Êı
+#1.1 åŠ è½½æ•°æ®,å¹¶ä¸”åˆ†åˆ«æ±‚å–æœˆå¹³å‡å¤ªé˜³è¾å°„ï¼Œæœˆå¹³å‡é£é€Ÿä»¥åŠå¹´æ€»é™æ°´
+# å®šä¹‰ä¸€ä¸ªå‚æ•°ä¸ºè·¯å¾„ï¼Œå¯ä»¥è¯»å–è¯¥è·¯å¾„ä¸‹æ‰€æœ‰tifæ–‡ä»¶çš„å‡½æ•°
 calculate_total <- function(filepath){
         filenames <- dir(filepath)
         for (i in 1:12){
@@ -15,33 +15,33 @@ calculate_total <- function(filepath){
                         next
                 }
                 totaldata = totaldata + raster(filename) 
-                #raster()¶ÁÈ¡ºó¿ÉÒÔÖ±½Ó¼Ó¼õÔËËã
+                #raster()è¯»å–åå¯ä»¥ç›´æ¥åŠ å‡è¿ç®—
         }
         return (totaldata)
 }
 
 path_prec <- "D:/ESEHW#5/wc2.1_2.5m_prec"
-prec <- calculate_total(path_prec)  #ÇóµÃÄê×Ü½µË®
+prec <- calculate_total(path_prec)  #æ±‚å¾—å¹´æ€»é™æ°´
 plot(prec,  main="Precipitation(mm/year)", col = terrain.colors(10), 
      xlab = "Long", ylab="Lat",ylim = c(-90,90))
 path_srad <- "D:/ESEHW#5/wc2.1_2.5m_srad" 
-srad <- calculate_total(path_srad) /12 * 365 #ÇóµÃÄê×ÜÌ«Ñô·øÉä
-plot(srad,  main="Srad(kJ/(m^2¡¤year))", col = terrain.colors(10), 
+srad <- calculate_total(path_srad) /12 * 365 #æ±‚å¾—å¹´æ€»å¤ªé˜³è¾å°„
+plot(srad,  main="Srad(kJ/(m^2Â·year))", col = terrain.colors(10), 
      xlab = "Long", ylab="Lat")
 path_wind <- "D:/ESEHW#5/wc2.1_2.5m_wind"
-wind <- calculate_total(path_wind) / 12 #ÇóµÃÄêÆ½¾ù·çËÙ
+wind <- calculate_total(path_wind) / 12 #æ±‚å¾—å¹´å¹³å‡é£é€Ÿ
 plot(wind,  main="Wind(m/s)", col = terrain.colors(10), 
      xlab = "Long", ylab="Lat")
 
 
 #-----------------------------------------------------------------------
-#1.2 »æÖÆÍ¼±í
-China_map <- readOGR("D:/ESEHW#5", "bou2_4p") #¼ÓÔØÖĞ¹úµØÍ¼
+#1.2 ç»˜åˆ¶å›¾è¡¨
+China_map <- readOGR("D:/ESEHW#5", "bou2_4p") #åŠ è½½ä¸­å›½åœ°å›¾
 plot(China_map)
 
 # Crop the raster
-prec_crop <- crop(prec, China_map) #ÓÃcrop´ÖÂÔ²Ã¼ôÇøÓò
-prec_mask <- mask(prec_crop,China_map) #ÓÃmask¾«È·²Ã¼ô
+prec_crop <- crop(prec, China_map) #ç”¨cropç²—ç•¥è£å‰ªåŒºåŸŸ
+prec_mask <- mask(prec_crop,China_map) #ç”¨maskç²¾ç¡®è£å‰ª
 srad_crop <- crop(srad, China_map)
 srad_mask <- mask(srad_crop,China_map)
 wind_crop <- crop(wind, China_map)
@@ -49,7 +49,7 @@ wind_mask <- mask(wind_crop,China_map)
 
 plot(prec_mask,  main="Precipitation(mm/year)", col = rainbow(20), 
      xlab = "Long", ylab="Lat")
-plot(srad_mask,  main="Srad(kJ/(m^2¡¤year))", col = terrain.colors(20), 
+plot(srad_mask,  main="Srad(kJ/(m^2Â·year))", col = terrain.colors(20), 
      xlab = "Long", ylab="Lat")
 plot(wind_mask,  main="Wind(m/s)", col = terrain.colors(16), 
      xlab = "Long", ylab="Lat")
@@ -59,25 +59,24 @@ plot(wind_mask,  main="Wind(m/s)", col = terrain.colors(16),
 image(wind_mask,col = terrain.colors(10))
 image(wind_mask, zlim =c(4 , 7),add = T ,col = 'red')
 
-w <- wind_mask > 3.5 #É¸Ñ¡·çËÙ´óÓÚ4µÄÇøÓò£¬µÃµ½²¼¶ûÀàĞÍ
+w <- wind_mask > 3.5 #ç­›é€‰é£é€Ÿå¤§äº4çš„åŒºåŸŸï¼Œå¾—åˆ°å¸ƒå°”ç±»å‹
 
 plot(w,col = c("skyblue","orange"),   
      xlab = "Long", ylab="Lat",legend=FALSE)
-legend("top", legend=c("Unselected","Selected"),   #Í¼ÀıÄÚÈİ
-       col=c("skyblue","orange"), lty=2,lwd=4)          #Í¼ÀıÑÕÉ«
+legend("top", legend=c("Unselected","Selected"),   #å›¾ä¾‹å†…å®¹
+       col=c("skyblue","orange"), lty=2,lwd=4)          #å›¾ä¾‹é¢œè‰²
 
 #---------------------------------------------------------------------
 #1.4
-#°²×°report ÒªÇó½øĞĞÉ¸Ñ¡
+#å®‰è£…report è¦æ±‚è¿›è¡Œç­›é€‰
 k <-  (srad_mask > 5852000 & prec_mask < 200)
 plot(k,col = c("skyblue","orange"),xlab = "Long", ylab="Lat",legend=FALSE)
-legend("top", legend=c("Unselected","Selected"),   #Í¼ÀıÄÚÈİ
+legend("top", legend=c("Unselected","Selected"),   #å›¾ä¾‹å†…å®¹
        col=c("skyblue","orange"), lty=2,lwd=4)
 
 
 
-
-
+# good work
 
 
 
