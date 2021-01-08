@@ -25,4 +25,4 @@ write(u,"(f8.1,f8.1,f8.1)") MN(4,1),MN(4,2),MN(4,3)
 close(u)
 end program Main
 
-
+! good work!
